@@ -1,0 +1,18 @@
+# Rust
+src-tauri/target/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Build artifacts
+*.dmg
+*.exe
+*.app
+*.msi
+*.AppImage
+*.deb
+*.rpm

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>流光计划 · 任务管理</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo"><i data-icon="sparkles"></i></div>
+        <div class="brand-text">
+          <div class="brand-name">流光计划</div>
+          <div class="brand-sub">任务管理</div>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav-items"></nav>
+
+      <div class="section-label">项目</div>
+      <div class="projects" id="projects-list"></div>
+
+      <div class="section-label">标签</div>
+      <div class="tags">
+        <span class="tag-pill">重要</span>
+        <span class="tag-pill">日常</span>
+        <span class="tag-pill">长期</span>
+        <span class="tag-pill">灵感</span>
+      </div>
+
+      <div class="storage-status">
+        <i data-icon="hard-drive"></i>
+        <div>
+          <div class="storage-title">数据本地存储</div>
+          <div class="storage-sub" id="storage-sub">已自动保存</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== Main ===== -->
+    <main class="main">
+      <header class="topbar">
+        <div class="greeting">
+          <h1 class="greeting-title">今日任务</h1>
+          <p class="greeting-sub" id="greeting-sub"></p>
+        </div>
+        <div class="topbar-actions">
+          <div class="search-box">
+            <i data-icon="search"></i>
+            <input type="text" id="search-input" placeholder="搜索事项…" autocomplete="off">
+          </div>
+          <button class="btn-primary" id="new-task-btn">
+            <i data-icon="plus"></i>新建任务
+          </button>
+        </div>
+      </header>
+
+      <div class="progress-hero" id="progress-hero"></div>
+
+      <div class="stats-row" id="stats-row"></div>
+
+      <!-- ===== 发布矩阵 ===== -->
+      <div class="matrix-section">
+        <div class="matrix-header">
+          <div class="matrix-header-left">
+            <h3 class="matrix-title">发布矩阵</h3>
+            <div class="matrix-month-nav">
+              <button class="month-btn" id="matrix-prev-month" title="上个月">‹</button>
+              <select class="matrix-month-select" id="matrix-month-select" title="选择月份"></select>
+              <button class="month-btn" id="matrix-next-month" title="下个月">›</button>
+              <button class="month-btn month-today" id="matrix-today" title="回到今天">今</button>
+            </div>
+          </div>
+          <button class="btn-ghost" id="add-matrix-col"><i data-icon="plus"></i>添加分类</button>
+        </div>
+        <div class="matrix-table" id="matrix-table"></div>
+      </div>
+
+      <!-- ===== 输入弹窗 ===== -->
+      <div class="input-modal-overlay" id="input-modal-overlay">
+        <div class="input-modal-box">
+          <div class="input-modal-label" id="input-modal-label">请输入名称</div>
+          <input type="text" class="input-modal-field" id="input-modal-field" placeholder="输入名称…" />
+          <div class="input-modal-actions">
+            <button class="input-modal-cancel" id="input-modal-cancel">取消</button>
+            <button class="input-modal-confirm" id="input-modal-confirm">确定</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 确认弹窗 ===== -->
+      <div class="confirm-modal-overlay" id="confirm-modal-overlay">
+        <div class="confirm-modal-box">
+          <div class="confirm-modal-text" id="confirm-modal-text">确定删除吗？</div>
+          <div class="confirm-modal-actions">
+            <button class="confirm-modal-cancel" id="confirm-modal-cancel">取消</button>
+            <button class="confirm-modal-confirm" id="confirm-modal-confirm">删除</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filter-tabs">
+          <button class="tab active" data-filter="all">全部</button>
+          <button class="tab" data-filter="today">今日</button>
+          <button class="tab" data-filter="active">进行中</button>
+          <button class="tab" data-filter="completed">已完成</button>
+        </div>
+        <div class="filter-controls">
+          <button class="btn-ghost" id="sort-btn">
+            <i data-icon="arrow-up-down"></i>按截止时间
+          </button>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid"><i data-icon="layout-grid"></i></button>
+            <button class="view-btn" data-view="list"><i data-icon="list"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="task-grid" id="task-grid"></div>
+    </main>
+
+    <!-- ===== Focus Panel ===== -->
+    <aside class="focus-panel" id="focus-panel"></aside>
+  </div>
+
+  <!-- ===== Modal ===== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">新建任务</h2>
+        <button class="modal-close" id="modal-close"><i data-icon="x"></i></button>
+      </div>
+      <form id="task-form">
+        <input type="hidden" id="editing-task-id">
+        <div class="form-group">
+          <label class="form-label">任务标题</label>
+          <input type="text" class="form-input" id="form-title" placeholder="输入任务名称…" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">描述</label>
+          <textarea class="form-textarea" id="form-description" placeholder="补充任务详情…" rows="2"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">分类</label>
+            <select class="form-select" id="form-category">
+              <option value="工作">工作</option>
+              <option value="学习">学习</option>
+              <option value="健康">健康</option>
+              <option value="生活">生活</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">优先级</label>
+            <select class="form-select" id="form-priority">
+              <option value="high">高</option>
+              <option value="medium" selected>中</option>
+              <option value="low">低</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">截止日期</label>
+            <input type="date" class="form-input" id="form-due-date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">进度 <span id="progress-display">0%</span></label>
+            <input type="range" class="form-range" id="form-progress" min="0" max="100" step="5" value="0">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">子任务完成</label>
+            <div class="subtask-inputs">
+              <input type="number" class="form-input sm" id="form-subtasks-done" placeholder="0" min="0" value="0">
+              <span class="subtask-sep">/</span>
+              <input type="number" class="form-input sm" id="form-subtasks-total" placeholder="0" min="0" value="0">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-danger" id="modal-delete" style="display:none">删除</button>
+          <div class="modal-footer-right">
+            <button type="button" class="btn-secondary" id="modal-cancel">取消</button>
+            <button type="submit" class="btn-primary">保存</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
