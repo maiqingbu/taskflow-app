@@ -64,7 +64,6 @@ jobs:
           name: windows-build
           path: |
             src-tauri/target/release/bundle/nsis/*.exe
-            src-tauri/target/release/bundle/msi/*.msi
 
   release:
     needs: build
@@ -93,7 +92,6 @@ jobs:
             - **macOS**: 下载 `.dmg` 安装包
           files: |
             artifacts/windows-build/**/*.exe
-            artifacts/windows-build/**/*.msi
             artifacts/macos-build/**/*.dmg
           draft: false
           prerelease: false
