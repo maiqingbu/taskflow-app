@@ -207,8 +207,14 @@ i[data-icon] svg { width: 1em; height: 1em; display: block; }
 }
 .matrix-col-header .col-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.7); }
 .matrix-col-header .col-name { flex: 1; }
-.matrix-col-header .col-del { opacity: .5; font-size: 14px; transition: opacity .15s; background: none; border: none; color: white; cursor: pointer; }
-.matrix-col-header .col-del:hover { opacity: 1; }
+.matrix-col-header .col-del {
+  width: 22px; height: 22px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; background: rgba(255,255,255,.18); border: none; color: white; cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+.matrix-col-header .col-del:hover { background: rgba(239,68,68,.85); transform: scale(1.08); }
+.matrix-col-header .col-del svg { width: 14px; height: 14px; display: block; }
 
 .matrix-module {
   background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md);
@@ -217,9 +223,16 @@ i[data-icon] svg { width: 1em; height: 1em; display: block; }
 .matrix-module:hover { border-color: rgba(99,102,241,.25); box-shadow: 0 2px 8px rgba(23,24,48,.04); }
 .module-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .module-name { font-size: 13px; font-weight: 600; }
-.module-del { width: 20px; height: 20px; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: var(--muted-fg); font-size: 14px; opacity: .35; transition: all .15s; background: none; border: none; cursor: pointer; }
-.matrix-module:hover .module-del { opacity: .7; }
-.module-del:hover { opacity: 1; background: rgba(239,68,68,.12); color: var(--danger); }
+.module-del {
+  width: 22px; height: 22px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted-fg); font-size: 14px;
+  background: var(--bg); border: 1px solid var(--border); cursor: pointer;
+  transition: all .15s;
+}
+.matrix-module:hover .module-del { color: var(--danger); border-color: rgba(239,68,68,.3); }
+.module-del:hover { background: rgba(239,68,68,.12); color: var(--danger); border-color: var(--danger); transform: scale(1.08); }
+.module-del svg { width: 14px; height: 14px; display: block; }
 
 .module-calendar { display: flex; flex-direction: column; gap: 4px; }
 .cal-labels { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
